@@ -57,7 +57,7 @@ class MatchesViewModel : ViewModel() {
 //                    stars = 2,
 //                    maps = "BO3",
 //                    teams = listOf(
-//                        Team(1, "MOUZ", "https://img-cdn.hltv.org/teamlogo/RfR1zmFJ0eP08VmFb6UOu3.png?ixlib=java-2.1.0&w=50&s=051cbffad4d1c25468d83abee6f4fe23"),
+//                        Team(1, "Mouz", "https://yt3.googleusercontent.com/iRY7jxVRvL3yDAgetgwroorXHCbEmaid_NFnwYVf9tpQVncwtNo5IyZvbprCKtg-iBKyBojT=s900-c-k-c0x00ffffff-no-rj"),
 //                        Team(2, "Outsiders", "https://img-cdn.hltv.org/teamlogo/K15IzjKuVPxnoWr3J3-tJ7.png?ixlib=java-2.1.0&w=50&s=d87bd1cf1f3835f152b363eecd95e3fe")
 //                    )
 //                )
