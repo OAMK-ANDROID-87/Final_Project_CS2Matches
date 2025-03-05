@@ -53,12 +53,12 @@ class MatchesViewModel : ViewModel() {
 //                Match(
 //                    id = 1,
 //                    time = "2024-03-05T12:00:00.000Z",
-//                    event = Event("Test Event", "https://example.com/logo.png"),
+//                    event = Event("Test Event", "https://img-cdn.hltv.org/eventlogo/nYADQoBBHeOXRjBW1kFOra.png?ixlib=java-2.1.0&w=50&s=cdec2e890642716f603d275d582433eb"),
 //                    stars = 2,
 //                    maps = "BO3",
 //                    teams = listOf(
-//                        Team(1, "Team A", "https://example.com/teamA.png"),
-//                        Team(2, "Team B", "https://example.com/teamB.png")
+//                        Team(1, "MOUZ", "https://img-cdn.hltv.org/teamlogo/RfR1zmFJ0eP08VmFb6UOu3.png?ixlib=java-2.1.0&w=50&s=051cbffad4d1c25468d83abee6f4fe23"),
+//                        Team(2, "Outsiders", "https://img-cdn.hltv.org/teamlogo/K15IzjKuVPxnoWr3J3-tJ7.png?ixlib=java-2.1.0&w=50&s=d87bd1cf1f3835f152b363eecd95e3fe")
 //                    )
 //                )
 //            )

@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">CS2_Matches</string>
+    <string name="app_name">CS2 Matches</string>
+    <string name="match_list_title">CS2 Matches</string>
+    <string name="loading_text">Loading...</string>
+    <string name="error_text">Failed to load matches</string>
+    <string name="match_details_title">Match Details</string>
+    <string name="format_text">Format: %1$s</string>
+    <string name="event_text">Event: %1$s</string>
+    <string name="date_text">Date: %1$s</string>
 </resources>
