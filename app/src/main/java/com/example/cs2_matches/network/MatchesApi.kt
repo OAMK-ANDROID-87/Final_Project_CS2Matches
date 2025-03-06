@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 interface MatchesApi {
-    @GET("matches.json")
+    @GET("matchesByEvent.json")
     suspend fun getMatches(): List<Match>
 
     companion object {

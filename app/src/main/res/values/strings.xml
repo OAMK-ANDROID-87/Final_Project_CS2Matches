@@ -4,6 +4,12 @@
     <string name="loading_text">Loading...</string>
     <string name="error_text">Failed to load matches</string>
     <string name="match_details_title">Match Details</string>
+    <string name="about_title">Info</string>
+    <string name="about_text">
+        This a simple CS2 Matches app as Android Course Final project.\n\n
+        App uses HLTV UNOFFICIAL JSON API "https://github.com/dajk/hltv-api".\n\n\n
+        Created by: Mostafa Trahim
+    </string>
     <string name="format_text">Format: %1$s</string>
     <string name="event_text">Event: %1$s</string>
     <string name="date_text">Date: %1$s</string>
