@@ -1,40 +1,100 @@
 package com.example.cs2_matches.ui
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
-import com.example.cs2_matches.R
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.cs2_matches.viewmodel.MatchUiState
-import com.example.cs2_matches.viewmodel.MatchesViewModel
+import androidx.navigation.NavController
+import kotlinx.coroutines.launch
+import com.example.cs2_matches.model.Match
+import com.example.cs2_matches.model.Player
+import com.example.cs2_matches.network.MatchesApi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MatchDetailScreen(matchId: Int, viewModel: MatchesViewModel = viewModel()) {
-    val uiState by viewModel.uiState
+fun MatchDetailScreen(matchId: Int, navController: NavController) {
+    val api = remember { MatchesApi.create() }
+    val scope = rememberCoroutineScope()
 
-    val match = (uiState as? MatchUiState.Success)?.matches?.find { it.id == matchId }
+    var match by remember { mutableStateOf<Match?>(null) }
+    var players by remember { mutableStateOf<List<Player>>(emptyList()) }
+
+    // Fetch match details and players
+    LaunchedEffect(matchId) {
+        scope.launch {
+            try {
+                val matches = api.getMatches()
+                match = matches.find { it.id == matchId }
+
+                match?.let { selectedMatch ->
+                    val allPlayers = api.getPlayers()
+                    players = selectedMatch.teams.flatMap { team ->
+                        allPlayers.filter { it.team == team.name }.take(5) // Limit to 5 players per team
+                    }
+                }
+            } catch (e: Exception) {
+                match = null
+                players = emptyList()
+            }
+        }
+    }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text(stringResource(id = R.string.match_details_title)) }) }
+        containerColor = Color(0xFF5b698c), // Match background color
+        topBar = {
+            TopAppBar(
+                title = {
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        Text(text = "Match", color = Color.White)
+                    }
+                },
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back", tint = Color.White)
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFF1D2730))
+            )
+        },
+        bottomBar = {
+            BottomAppBar(
+                containerColor = Color(0xFF1D2730),
+                contentColor = Color.White
+            ) {
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = "Test")
+                }
+            }
+        }
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
-            match?.let {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        text = "${it.teams.getOrNull(0)?.name ?: "Unknown"} vs ${it.teams.getOrNull(1)?.name ?: "Unknown"}",
-                        style = MaterialTheme.typography.titleLarge
-                    )
-                    Text(text = stringResource(id = R.string.event_text, it.event.name))
-                    Text(text = stringResource(id = R.string.date_text, it.time))
-                    Text(text = stringResource(id = R.string.format_text, it.maps))
+            match?.let { selectedMatch ->
+                Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+                    // Match Info
+                    Text(text = "Match: ${selectedMatch.teams.joinToString(" vs ") { it.name }}", style = MaterialTheme.typography.titleLarge)
 
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Lineups
+                    Text(text = "Team Lineups:", style = MaterialTheme.typography.titleMedium)
+
+                    LazyColumn {
+                        items(players) { player ->
+                            Text(text = "${player.nickname} (${player.team}) - Rating: ${player.rating}")
+                        }
+                    }
                 }
-            } ?: Text("Match not found")
+            } ?: Text(text = "Loading match details...", color = Color.White)
         }
     }
 }

@@ -37,7 +37,8 @@ fun AppNavigation() {
             arguments = listOf(navArgument("matchId") { type = NavType.IntType })
         ) { backStackEntry ->
             val matchId = backStackEntry.arguments?.getInt("matchId") ?: 0
-            MatchDetailScreen(matchId)
+            MatchDetailScreen(matchId, navController)
+
         }
     }
 }
@@ -49,19 +50,3 @@ fun AppPreview() {
         AppNavigation()
     }
 }
-//@Preview(showBackground = true, showSystemUi = true)
-//@Composable
-//fun MatchListScreenPreview() {
-//    CS2_MatchesTheme {
-//        MatchListScreen(navController = rememberNavController())
-//    }
-//}
-
-//@Preview(showBackground = true, showSystemUi = true)
-//@Composable
-//fun MatchDetailScreenPreview() {
-//    CS2_MatchesTheme {
-//        MatchDetailScreen(matchId = 123) // Use a fake match ID for preview
-//    }
-//}
-
