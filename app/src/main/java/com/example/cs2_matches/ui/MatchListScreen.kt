@@ -31,6 +31,15 @@ fun MatchListScreen(navController: NavController, viewModel: MatchesViewModel = 
     val uiState by viewModel.uiState
     var showInfoDialog by remember { mutableStateOf(false) }
     var selectedDate by remember { mutableStateOf("") }
+    var showEventMatches by remember { mutableStateOf(false) }
+
+    LaunchedEffect(showEventMatches) {
+        if (showEventMatches) {
+            viewModel.fetchEventMatches()
+        } else {
+            viewModel.fetchMatches()
+        }
+    }
 
     Scaffold(
         containerColor= Color(0xFF5b698c),
@@ -63,7 +72,16 @@ fun MatchListScreen(navController: NavController, viewModel: MatchesViewModel = 
                 containerColor = Color(0xFF1D2730),
                 contentColor = Color.White
             ) {
-                DatePickerButton(selectedDate) { newDate -> selectedDate = newDate }
+                Spacer(modifier = Modifier.width(8.dp))
+                Button(
+                    onClick = { showEventMatches = !showEventMatches },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF292B3A))
+                ) {
+                    Text(
+                        text = if (showEventMatches) "Show Regular Matches" else "Show Big Events Matches",
+                        color = Color.White
+                    )
+                }
             }
         }
     ) { innerPadding ->
@@ -105,19 +123,7 @@ fun MatchListScreen(navController: NavController, viewModel: MatchesViewModel = 
             }
         )
     }
-
 }
-
-@Composable
-fun DatePickerButton(selectedDate: String, onDateSelected: (String) -> Unit) {
-    Button(
-        onClick = { /* Show Date Picker Logic */ },
-        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF292B3A)) // Darker Gray
-    ) {
-        Text(text = if (selectedDate.isEmpty()) "Select Date" else "Date: $selectedDate", color = Color.White)
-    }
-}
-
 
 @Composable
 fun MatchList(matches: List<Match>, navController: NavController) {

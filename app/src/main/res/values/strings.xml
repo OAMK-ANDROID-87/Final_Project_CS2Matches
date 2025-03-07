@@ -6,9 +6,9 @@
     <string name="match_details_title">Match Details</string>
     <string name="about_title">Info</string>
     <string name="about_text">
-        This a simple CS2 Matches app as Android Course Final project.\n\n
-        App uses HLTV UNOFFICIAL JSON API "https://github.com/dajk/hltv-api".\n\n\n
-        Created by: Mostafa Trahim
+        This is a simple CS2 Matches app as Android Course Final project.\n\n
+        App uses HLTV UNOFFICIAL JSON API "https://github.com/dajk/hltv-api".\n\n
+        Created by: <b>Mostafa Trahim</b>
     </string>
     <string name="format_text">Format: %1$s</string>
     <string name="event_text">Event: %1$s</string>

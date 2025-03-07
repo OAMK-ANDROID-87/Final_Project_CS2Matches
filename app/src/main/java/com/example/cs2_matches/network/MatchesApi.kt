@@ -7,8 +7,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 interface MatchesApi {
-    @GET("matchesByEvent.json")
+    @GET("matches.json")
     suspend fun getMatches(): List<Match>
+
+    @GET("matchesByEvent.json")
+    suspend fun getMatchesByEvent(): List<Match>
 
     @GET("match.json")
     suspend fun getPlayers(): List<Player> // New API call for fetching players

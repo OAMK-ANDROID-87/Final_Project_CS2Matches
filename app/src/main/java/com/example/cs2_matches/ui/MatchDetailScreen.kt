@@ -1,5 +1,6 @@
 package com.example.cs2_matches.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import kotlinx.coroutines.launch
 import com.example.cs2_matches.model.Match
 import com.example.cs2_matches.model.Player
@@ -80,21 +82,9 @@ fun MatchDetailScreen(matchId: Int, navController: NavController) {
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
             match?.let { selectedMatch ->
-                Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-                    // Match Title: "Team A vs Team B"
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "${selectedMatch.teams.getOrNull(0)?.name ?: "Unknown"} vs ${
-                                selectedMatch.teams.getOrNull(
-                                    1
-                                )?.name ?: "Unknown"
-                            }",
-                            style = MaterialTheme.typography.titleLarge
-                        )
-                    }
+                Column(modifier = Modifier.fillMaxSize()) {
+                    // Match Header
+                    MatchHeader(selectedMatch)
 
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -107,7 +97,7 @@ fun MatchDetailScreen(matchId: Int, navController: NavController) {
                     val team1 = players.filter { it.team == selectedMatch.teams.getOrNull(0)?.name }
                     val team2 = players.filter { it.team == selectedMatch.teams.getOrNull(1)?.name }
 
-                    LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                    LazyColumn(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
                         items(team1.zip(team2)) { (player1, player2) ->
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
@@ -130,3 +120,75 @@ fun MatchDetailScreen(matchId: Int, navController: NavController) {
         }
     }
 }
+
+@Composable
+fun MatchHeader(selectedMatch: Match) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        // Tournament Title (Centered)
+        Text(
+            text = selectedMatch.event.name,
+            color = Color.White,
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        // Match Info Card
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.95f) // Adjust size
+                .background(Color(0xFF9BA9BB), MaterialTheme.shapes.medium)
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                // Teams and Logos Row
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    // Team 1
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        AsyncImage(
+                            model = selectedMatch.teams.getOrNull(0)?.logo,
+                            contentDescription = "Team 1 Logo",
+                            modifier = Modifier.size(48.dp)
+                        )
+                        Text(
+                            text = selectedMatch.teams.getOrNull(0)?.name ?: "Unknown",
+                            color = Color.White,
+                            style = MaterialTheme.typography.labelLarge
+                        )
+                    }
+
+                    // Match Time
+                    Text(
+                        text = selectedMatch.time.split("T")[1].substring(0, 5),
+                        color = Color.White,
+                        style = MaterialTheme.typography.headlineSmall
+                    )
+
+                    // Team 2
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        AsyncImage(
+                            model = selectedMatch.teams.getOrNull(1)?.logo,
+                            contentDescription = "Team 2 Logo",
+                            modifier = Modifier.size(48.dp)
+                        )
+                        Text(
+                            text = selectedMatch.teams.getOrNull(1)?.name ?: "Unknown",
+                            color = Color.White,
+                            style = MaterialTheme.typography.labelLarge
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
