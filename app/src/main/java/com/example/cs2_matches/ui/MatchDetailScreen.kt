@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
@@ -47,7 +48,7 @@ fun MatchDetailScreen(matchId: Int, navController: NavController) {
     }
 
     Scaffold(
-        containerColor = Color(0xFF5b698c), // Match background color
+        containerColor = Color(0xFF5b698c),
         topBar = {
             TopAppBar(
                 title = {
@@ -80,17 +81,48 @@ fun MatchDetailScreen(matchId: Int, navController: NavController) {
         Box(modifier = Modifier.padding(innerPadding)) {
             match?.let { selectedMatch ->
                 Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-                    // Match Info
-                    Text(text = "Match: ${selectedMatch.teams.joinToString(" vs ") { it.name }}", style = MaterialTheme.typography.titleLarge)
+                    // Match Title: "Team A vs Team B"
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "${selectedMatch.teams.getOrNull(0)?.name ?: "Unknown"} vs ${
+                                selectedMatch.teams.getOrNull(
+                                    1
+                                )?.name ?: "Unknown"
+                            }",
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                    }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Lineups
+                    // Lineups Section
                     Text(text = "Team Lineups:", style = MaterialTheme.typography.titleMedium)
 
-                    LazyColumn {
-                        items(players) { player ->
-                            Text(text = "${player.nickname} (${player.team}) - Rating: ${player.rating}")
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    // Splitting teams into two lists
+                    val team1 = players.filter { it.team == selectedMatch.teams.getOrNull(0)?.name }
+                    val team2 = players.filter { it.team == selectedMatch.teams.getOrNull(1)?.name }
+
+                    LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                        items(team1.zip(team2)) { (player1, player2) ->
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                // Left Team Player
+                                Text(text = "${player1.nickname} (${player1.rating})", modifier = Modifier.weight(1f))
+
+                                // Right Team Player
+                                Text(
+                                    text = "${player2.nickname} (${player2.rating})",
+                                    modifier = Modifier.weight(1f),
+                                    textAlign = TextAlign.End
+                                )
+                            }
                         }
                     }
                 }
