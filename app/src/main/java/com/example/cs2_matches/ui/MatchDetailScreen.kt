@@ -73,10 +73,8 @@ fun MatchDetailScreen(matchId: Int, navController: NavController) {
             ) {
                 Box(
                     modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = "Test")
-                }
+
+                )
             }
         }
     ) { innerPadding ->
@@ -104,7 +102,9 @@ fun MatchDetailScreen(matchId: Int, navController: NavController) {
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 // Left Team Player
-                                Text(text = "${player1.nickname} (${player1.rating})", modifier = Modifier.weight(1f))
+                                Text(
+                                    text = "${player1.nickname} (${player1.rating})",
+                                    modifier = Modifier.weight(1f))
 
                                 // Right Team Player
                                 Text(
@@ -129,7 +129,7 @@ fun MatchHeader(selectedMatch: Match) {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Tournament Title (Centered)
+        // Tournament Title
         Text(
             text = selectedMatch.event.name,
             color = Color.White,
@@ -140,7 +140,7 @@ fun MatchHeader(selectedMatch: Match) {
         // Match Info Card
         Box(
             modifier = Modifier
-                .fillMaxWidth(0.95f) // Adjust size
+                .fillMaxWidth(0.95f)
                 .background(Color(0xFF9BA9BB), MaterialTheme.shapes.medium)
                 .padding(16.dp),
             contentAlignment = Alignment.Center
